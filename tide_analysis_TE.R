@@ -33,8 +33,6 @@ dat <- merge(dat1, wtmp, by = 'date.caught', all = T) %>%
 head(dat)
 summary(dat)
 
-
-
 # This uses a fxn that goes straigt to noaa but I'm still deciphering it
 # rm(list=ls())
 # install.packages('rnoaa')
@@ -43,7 +41,7 @@ summary(dat)
 # x <- buoy(dataset = 'ocean', buoyid = 9410170, year = 2006, length= T)
 # y <- ncdc_stations(stationid = "9410170")
 
-
+# first glm is a logistic regression with all variables plus some interactions:
 fit <- glm(turtles_01 ~ height.caught + ws.time.caught +
                  airtmp.time.caught + tidedif.time +
                  enviro.dt + effort.ratio + doy+
@@ -52,12 +50,14 @@ fit <- glm(turtles_01 ~ height.caught + ws.time.caught +
                data = dat, family = 'binomial')
 summary(fit)
 
-fit.poissson <- glm(n_turtles ~ height.caught + ws.time.caught +
+# look at the Poisson regression but this probably doesn't make much sense.
+fit.poisson <- glm(n_turtles ~ height.caught + ws.time.caught +
                       airtmp.time.caught + tidedif.time +
                       enviro.dt + effort.ratio + doy+
                       wd_01 + powpt_01 + tidedif + wat.tmpC +
                       wat.tmpC*powpt_01 + doy *powpt_01,
                     data = dat, family = 'poisson')
+
 #looking at summary of fit.1.0, you can see that height.caught, enviro.dt, and effort.ratio suck in Pr values
 fit1 <- update(fit, .~. - height.caught - doy - enviro.dt
                     - effort.ratio - wd_01- airtmp.time.caught)
