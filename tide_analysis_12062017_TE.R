@@ -10,7 +10,6 @@ head(dat1)
 # to see all columns, you can do
 head(data.frame(dat1))
 
-
 inv.logit <- function(x) exp(x)/(1 + exp(x))
 
 my.logit <- function(p) log(p/(1-p))
@@ -27,7 +26,6 @@ dat1$powpt_01 <- ifelse(dat1$date.caught < "2010-12-31", 0, 1)
 #NOAA didn't have the data for that day
 wtmp <- read_csv('T:/Katie Turtle Data/data/Necessary Data/watertmp_data.csv')
 wtmp$date.caught <- as.Date(wtmp$date.caught, format = "%m/%d/%Y")
-
 
 # add two new variables - tidedif and tidedif.time
 #tidedif = the change in tide height around the capture time
