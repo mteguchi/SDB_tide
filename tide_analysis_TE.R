@@ -83,19 +83,29 @@ influencePlot(fit1)
 
 #library('logistf')
 
+# data with only the 2017 season:
 dat_2017 <- filter(dat, date.caught > '2017-01-01')
+
+# Because there was only one day of 0 capture, logistic regression
+# would not be a good choice. Use Poisson regression here:
 fit.1.2017Poi <- glm(n_turtles ~ height.caught + ws.time.caught +
                          airtmp.time.caught +
                          doy +
                          wd_01 + tidedif + wat.tmpC,
                        data = dat_2017, family = 'poisson')
 
+# update to remove one variable at a time:
 fit.2.2017Poi <- update(fit.1.2017Poi, .~. - doy)
 fit.3.2017Poi <- update(fit.2.2017Poi, .~. - height.caught)
 fit.4.2017Poi <- update(fit.3.2017Poi, .~. - wd_01)
 fit.5.2017Poi <- update(fit.4.2017Poi, .~. - tidedif)
 fit.6.2017Poi <- update(fit.5.2017Poi, .~. - wat.tmpC)
 
+# Compare AICs to see which one is the best
+AIC(fit.1.2017Poi, fit.2.2017Poi, fit.3.2017Poi,
+    fit.4.2017Poi, fit.5.2017Poi, fit.6.2017Poi)
+
+# look at the predictions:
 height.caught.vec <- seq(from = -0.5, to = 1.5, by = 0.1)
 predict.height <- fit.2.2017Poi[["coefficients"]][["(Intercept)"]] +
   fit.2.2017Poi[["coefficients"]][["height.caught"]] * height.caught.vec +
@@ -110,6 +120,7 @@ df.height.caught <- data.frame(xvals = height.caught.vec,
 
 fit.height.caught <- loessLine(dat_2017$height.caught, dat_2017$n_turtles)
 
+# plot results:
 p1 <- ggplot() +
   geom_point(data = dat_2017,
              aes(x = height.caught,
