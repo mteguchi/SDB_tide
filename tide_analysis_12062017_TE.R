@@ -141,7 +141,3 @@ fit.1.2017 <- glm(turtles_01 ~ height.caught + ws.time.caught +
 summary(fit.1.2017)
 
 
-
-summary(fit.2.2017)
-marginalModelPlots(fit.2.2017)
-
