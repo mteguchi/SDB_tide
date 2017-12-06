@@ -88,11 +88,8 @@ influenceIndexPlot(fit1)
 #identify outliers explicitly (gives studentized Residual, Hat, CookD values)
 influencePlot(fit1)
 
+#library('logistf')
 
-library('logistf')
-
-#this one is difficult bc the standard error is HUGE so had to use logistf (firth logistics)
-# Look at just 2017:
 dat_2017 <- filter(dat, date.caught > '2017-01-01')
 fit.1.2017Poi <- glm(n_turtles ~ height.caught + ws.time.caught +
                          airtmp.time.caught +
