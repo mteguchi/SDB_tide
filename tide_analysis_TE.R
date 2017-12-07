@@ -129,7 +129,8 @@ p1 <- ggplot() +
   geom_line(data = df.height.caught,
             aes(x = xvals,
                 y = yvals),
-            color = 'red')
+            color = 'red',
+            size = 2.5)
 
 
 summary(dat_2017adj) #p values are pretty high but standard error is low
